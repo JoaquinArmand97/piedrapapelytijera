@@ -1,18 +1,59 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.kode-mono-ejemplo {
+    font-family: 'Kode Mono', monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+  }
+
+  
+  body {
+        background-image: url(./assets/fondo2.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .inicio h1 {
+        font-family: 'Kode Mono', monospace;
+        font-size: 80px; 
+        color: white;
+        display: flex;
+        justify-content: center;
+        margin: 15px;
+        padding: 25px;
+    }
+    
+  .hidden {
+      display: none;
+  }
+
+  .img-thumbnail {
+    width: 30%;
+    height: 20px;
+    margin: 20px;
+  }
+ 
+  .inicio {
+    position: relative;
+    height: 100vh; 
 }
 
-body {
-    background-image: url(./assets/juego\,piedra.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: white;
-    font-size: 48px;
+#jugarBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 55px;
+    padding: 20px;
 }
+  
+
 
