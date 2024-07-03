@@ -29,20 +29,28 @@
         </div>
        
         <button type="button" id="jugarBtn" class="btn btn-outline-warning btn-lg">JUGAR</button>
-       
+        
         <div id="nombreInput" class="hidden">
             <h2>Ingresa tu nombre</h2>
             <input type="text" placeholder="Ingresa tu nombre" id="nombreJugador"> 
             <button type="button" id="jugarBtn3" class="btn btn-outline-warning btn-lg">Listo</button>
         </div>
-
-      
     </div>
-     <button type="button" id="jugarBtn2" class="btn btn-outline-warning btn-lg escondido">VOLVER A JUGAR</button>
-     <div class="ultimosjugadores">
+
+    <button type="button" id="jugarBtn2" class="btn btn-outline-warning btn-lg escondido">VOLVER A JUGAR</button>
+
+        <div class="Esconder">
+            <input type="text" id="inputClave" readonly>
+            <button type="button" id="copiarBtn" class="btn btn-outline-success btn-sm">COPIAR CUPON</button>
+            <button type="button" id="jugarBtn5" class="btn btn-outline-warning btn-sm">OBTENER CUPON</button>
+    </div>
+    
+    <div class="ultimosjugadores">
         <h2>Últimos 5 jugadores:</h2>
         <ul id="listaJugadores"></ul>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="./main.js"></script>
 </body>

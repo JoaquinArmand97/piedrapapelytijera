@@ -1,50 +1,72 @@
 document.addEventListener('DOMContentLoaded', function() {
     const juego = new Juego();
     const jugarBtn = document.getElementById('jugarBtn');
-    const jugarBtn2 = document.getElementById('jugarBtn2');
     const nombreInput = document.getElementById('nombreInput');
     const jugarBtn3 = document.getElementById('jugarBtn3');
     const nombreJugador = document.getElementById('nombreJugador');
+    const buttonClave = document.getElementById('jugarBtn5');
+    const inputClave = document.getElementById('inputClave');
+    const copiarBtn = document.getElementById('copiarBtn');
 
-    mostrarUltimosJugadores();
-
+    let generar = (largo) => {
+        let data = "SKFJKskjslk%#@#$%^&*2342134KJFSA";
+        data = data.split('');
+        let clave = '';
+        for (let i = 0; i < largo; i++) {
+            let claveAleatorio = Math.floor(Math.random() * data.length);
+            clave += data[claveAleatorio];
+        }
+        return clave;
+    };
+    
+    let miClave = ''; 
+    
+    buttonClave.addEventListener('click', function() {
+        miClave = generar(10); 
+        inputClave.value = miClave; 
+    });
+    
+    copiarBtn.addEventListener('click', function() {
+        inputClave.select();
+        document.execCommand('copy');
+        alert('Cupón copiado: ' + inputClave.value);
+    });
+    
     jugarBtn.addEventListener('click', function() {
         nombreInput.classList.remove('hidden');
         jugarBtn.style.display = 'none';
     });
-
-    jugarBtn3.addEventListener('click', function() {
+    
+    jugarBtn3.addEventListener('click', async function() {
         const nombre = nombreJugador.value.trim();
         if (nombre) {
-            juego.setNombreJugador(nombre);
-            nombreInput.classList.add('hidden');
-            document.querySelector('.imagenes').classList.remove('escondido');
-            juego.inicioJuego();
-            guardarJugador(nombre);
+            const { value: miClaveUsuario } = await Swal.fire({
+                title: "Ingresa Cupon de regalo",
+                input: "password",
+                inputLabel: "Ingresar Cupon",
+                inputPlaceholder: "Ingresa cupon de regalo",
+                inputAttributes: {
+                    maxlength: "10", 
+                    autocapitalize: "off",
+                    autocorrect: "off"
+                }
+            });
+    
+            if (miClaveUsuario === miClave) { 
+                Swal.fire(`Ingresaste con el cupon de regalo ${miClaveUsuario}`);
+                juego.setNombreJugador(nombre);
+                nombreInput.classList.add('hidden');
+                document.querySelector('.imagenes').classList.remove('escondido');
+                juego.inicioJuego();
+                guardarJugador(nombre);
+            } else {
+                Swal.fire("Cupon no valido");
+            }
         } else {
             alert("Por favor, ingresa un nombre.");
         }
     });
-
-    jugarBtn2.addEventListener('click', function() {
-        jugarBtn2.classList.add('escondido');
-        document.querySelector('.imagenes').classList.remove('escondido');
-        const mensajeFinal = document.querySelector('.mensajeFinal');
-        if (mensajeFinal) {
-            mensajeFinal.remove();
-        }
-        juego.inicioJuego();
-    });
-
-    document.getElementById('piedra').addEventListener('click', function() {
-        juego.usuarioElige('Piedra');
-    });
-    document.getElementById('papel').addEventListener('click', function() {
-        juego.usuarioElige('Papel');
-    });
-    document.getElementById('tijera').addEventListener('click', function() {
-        juego.usuarioElige('Tijera');
-    });
+    
 
     function guardarJugador(nombre) {
         let jugadores = JSON.parse(localStorage.getItem('jugadores')) || [];
@@ -53,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             jugadores.pop();
         }
         localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        mostrarUltimosJugadores();
     }
 
     function mostrarUltimosJugadores() {
