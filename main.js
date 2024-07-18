@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const juego = new Juego();
+
     const jugarBtn = document.getElementById('jugarBtn');
     const nombreInput = document.getElementById('nombreInput');
     const jugarBtn3 = document.getElementById('jugarBtn3');
@@ -9,6 +10,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const copiarBtn = document.getElementById('copiarBtn');
     const imagenes = document.querySelector('.imagenes');
     const resultados = document.getElementById('resultados');
+
+    const horaArgentinaDiv = document.getElementById('horaArgentina');
+
+    async function obtenerHoraArgentina() {
+        try {
+            const response = await fetch('https://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires');
+            const data = await response.json();
+            const dateTime = new Date(data.datetime);
+            horaArgentinaDiv.innerText = `Hora en Argentina: ${dateTime.toLocaleTimeString()}`;
+        } catch (error) {
+            horaArgentinaDiv.innerText = 'Error al obtener la hora de Argentina.';
+            console.error('Error fetching Argentina time:', error);
+        }
+    }
+
+    obtenerHoraArgentina();
 
     let generar = (largo) => {
         let data = "SKFJKskjslk%#@#$%^&*2342134KJFSA";
@@ -20,25 +37,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return clave;
     };
-    
-    let miClave = ''; 
-    
+
+    let miClave = '';
+
     buttonClave.addEventListener('click', function() {
-        miClave = generar(10); 
-        inputClave.value = miClave; 
+        miClave = generar(10);
+        inputClave.value = miClave;
     });
-    
+
     copiarBtn.addEventListener('click', function() {
         inputClave.select();
         document.execCommand('copy');
         alert('Cupón copiado: ' + inputClave.value);
     });
-    
+
     jugarBtn.addEventListener('click', function() {
         nombreInput.classList.remove('hidden');
         jugarBtn.classList.add('hidden');
     });
-    
+
     jugarBtn3.addEventListener('click', async function() {
         const nombre = nombreJugador.value.trim();
         if (nombre) {
@@ -48,13 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 inputLabel: "Ingresar Cupon",
                 inputPlaceholder: "Ingresa cupon de regalo",
                 inputAttributes: {
-                    maxlength: "10", 
+                    maxlength: "10",
                     autocapitalize: "off",
                     autocorrect: "off"
                 }
             });
 
-            if (miClaveUsuario && miClaveUsuario === miClave) { 
+            if (miClaveUsuario && miClaveUsuario === miClave) {
                 Swal.fire(`Ingresaste con el cupon de regalo ${miClaveUsuario}`);
                 juego.setNombreJugador(nombre);
                 nombreInput.classList.add('hidden');
@@ -80,6 +97,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('tijera').addEventListener('click', function() {
         juego.usuarioElige('Tijera');
+    });
+
+    document.getElementById('jugarBtn2').addEventListener('click', function() {
+        juego.inicioJuego();
     });
 
     function guardarJugador(nombre) {
