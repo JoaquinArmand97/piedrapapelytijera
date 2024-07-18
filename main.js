@@ -1,3 +1,5 @@
+// JavaScript (main.js)
+
 document.addEventListener('DOMContentLoaded', function() {
     const juego = new Juego();
     const jugarBtn = document.getElementById('jugarBtn');
@@ -51,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     autocorrect: "off"
                 }
             });
-    
-            if (miClaveUsuario === miClave) { 
+
+            if (miClaveUsuario && miClaveUsuario === miClave) { // Verifica que miClaveUsuario no esté vacío
                 Swal.fire(`Ingresaste con el cupon de regalo ${miClaveUsuario}`);
                 juego.setNombreJugador(nombre);
                 nombreInput.classList.add('hidden');
@@ -66,7 +68,19 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Por favor, ingresa un nombre.");
         }
     });
-    
+
+    // Event listener para las imágenes de piedra, papel y tijera
+    document.getElementById('piedra').addEventListener('click', function() {
+        juego.usuarioElige('Piedra');
+    });
+
+    document.getElementById('papel').addEventListener('click', function() {
+        juego.usuarioElige('Papel');
+    });
+
+    document.getElementById('tijera').addEventListener('click', function() {
+        juego.usuarioElige('Tijera');
+    });
 
     function guardarJugador(nombre) {
         let jugadores = JSON.parse(localStorage.getItem('jugadores')) || [];
