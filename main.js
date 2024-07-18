@@ -1,5 +1,3 @@
-// JavaScript (main.js)
-
 document.addEventListener('DOMContentLoaded', function() {
     const juego = new Juego();
     const jugarBtn = document.getElementById('jugarBtn');
@@ -9,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttonClave = document.getElementById('jugarBtn5');
     const inputClave = document.getElementById('inputClave');
     const copiarBtn = document.getElementById('copiarBtn');
+    const imagenes = document.querySelector('.imagenes');
+    const resultados = document.getElementById('resultados');
 
     let generar = (largo) => {
         let data = "SKFJKskjslk%#@#$%^&*2342134KJFSA";
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     jugarBtn.addEventListener('click', function() {
         nombreInput.classList.remove('hidden');
-        jugarBtn.style.display = 'none';
+        jugarBtn.classList.add('hidden');
     });
     
     jugarBtn3.addEventListener('click', async function() {
@@ -54,11 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            if (miClaveUsuario && miClaveUsuario === miClave) { // Verifica que miClaveUsuario no esté vacío
+            if (miClaveUsuario && miClaveUsuario === miClave) { 
                 Swal.fire(`Ingresaste con el cupon de regalo ${miClaveUsuario}`);
                 juego.setNombreJugador(nombre);
                 nombreInput.classList.add('hidden');
-                document.querySelector('.imagenes').classList.remove('escondido');
+                imagenes.classList.remove('hidden');
+                resultados.classList.remove('hidden');
                 juego.inicioJuego();
                 guardarJugador(nombre);
             } else {
@@ -69,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Event listener para las imágenes de piedra, papel y tijera
     document.getElementById('piedra').addEventListener('click', function() {
         juego.usuarioElige('Piedra');
     });
@@ -102,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
             listaJugadores.appendChild(li);
         });
     }
+
+    mostrarUltimosJugadores();
 });
 
 class Jugador {
@@ -125,27 +127,22 @@ class Juego {
 
     setNombreJugador(nombre) {
         this.jugador.nombre = nombre;
-        document.getElementById('victoriasJugador').innerText = `Victorias de ${nombre} : 0 `;
+        document.getElementById('victoriasJugador').innerText = `Victorias de ${nombre}: 0`;
     }
 
     inicioJuego() {
         this.jugador.victorias = 0;
         this.pc.victorias = 0;
         this.actualizarVictorias();
-        document.querySelector('.imagenes').classList.remove('escondido');
-        document.getElementById('jugarBtn2').classList.add('escondido');
-        const mensajeFinal = document.querySelector('.mensajeFinal');
-        if (mensajeFinal) {
-            mensajeFinal.remove();
-        }
+        document.querySelector('.imagenes').classList.remove('hidden');
+        document.getElementById('jugarBtn').classList.add('hidden');
+        document.getElementById('jugarBtn2').classList.add('hidden');
+        document.querySelectorAll('.mensajeFinal').forEach(el => el.remove());
     }
 
     usuarioElige(eleccion) {
         let pcEleccion = this.pcJuega();
-        console.log(`${this.jugador.nombre} ha seleccionado: ${eleccion}`);
-        console.log(`La computadora ha seleccionado: ${pcEleccion}`);
         this.mostrarJugadas(eleccion, pcEleccion);
-
         let resultado = this.ganador(eleccion, pcEleccion);
         if (resultado === "¡Ganaste!") {
             this.jugador.incrementarVictorias();
@@ -170,31 +167,28 @@ class Juego {
 
     ganador(jugador, pc) {
         if (jugador === pc) {
-            console.log("¡Empate!");
             return "¡Empate!";
         } else if (
             (jugador === "Piedra" && pc === "Tijera") ||
             (jugador === "Papel" && pc === "Piedra") ||
             (jugador === "Tijera" && pc === "Papel")
         ) {
-            console.log("¡Ganaste!");
             return "¡Ganaste!";
         } else {
-            console.log("¡Perdiste!");
             return "¡Perdiste!";
         }
     }
 
     mostrarJugadas(jugador, pc) {
         document.getElementById('jugadas').classList.remove('hidden');
-        document.getElementById('jugadaJugador').innerText = `El jugador ha elegido: ${jugador} `;
-        document.getElementById('jugadaComputadora').innerText = ` La computadora ha elegido: ${pc}`;
+        document.getElementById('jugadaJugador').innerText = `El jugador ha elegido: ${jugador}`;
+        document.getElementById('jugadaComputadora').innerText = `La computadora ha elegido: ${pc}`;
     }
 
     actualizarVictorias() {
         document.getElementById('resultados').style.display = 'flex';
         document.getElementById('victoriasJugador').innerText = `Victorias de ${this.jugador.nombre}: ${this.jugador.victorias}`;
-        document.getElementById('victoriasComputadora').innerText = ` Victorias de la computadora: ${this.pc.victorias}`;
+        document.getElementById('victoriasComputadora').innerText = `Victorias de la computadora: ${this.pc.victorias}`;
     }
 
     mostrarMensajeFinal(mensaje) {
@@ -206,8 +200,8 @@ class Juego {
     }
 
     finalizarJuego() {
-        document.querySelector('.imagenes').classList.add('escondido');
-        document.getElementById('jugarBtn2').classList.remove('escondido');
+        document.querySelector('.imagenes').classList.add('hidden');
+        document.getElementById('jugarBtn2').classList.remove('hidden');
         document.getElementById('jugarBtn2').style.display = 'block';
     }
 }
